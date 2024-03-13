@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: self-hosted
+    runs-on: Amazon Linux
 
     steps:
     - name: Checkout code
