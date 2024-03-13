@@ -6,13 +6,13 @@ on:
       - master # Change this to your main branch name
 
 jobs:
-  deploy:
-    runs-on: Amazon Linux
-
+  Example-Actions-Job:
+    name: Exploring GitHub Actions
+    runs-on: self-hosted
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
-
+    - uses: actions/checkout@v2
+    
     - name: Set up SSH key
       uses: webfactory/ssh-agent@v0.5.3
       with:
