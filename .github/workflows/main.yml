@@ -23,6 +23,4 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/ ubuntu@18.224.53.43 "
         cd /var/www/html/test
-        sudo git add .
-        sudo git commit -m "servercommit"
         sudo git pull origin master "
