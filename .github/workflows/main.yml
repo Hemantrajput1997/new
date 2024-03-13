@@ -3,7 +3,7 @@ name: Deploy to AWS
 on:
   push:
     branches:
-      - main  # Change this to your main branch name
+      - master # Change this to your main branch name
 
 jobs:
   deploy:
@@ -23,4 +23,6 @@ jobs:
       run: |
         ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/ ubuntu@18.224.53.43 "
         cd /var/www/html/test
-        sudo git pull origin main "
+        sudo git add .
+        sudo git commit -m "servercommit"
+        sudo git pull origin master "
