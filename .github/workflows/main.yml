@@ -1,28 +1,35 @@
-name: Deploy to AWS
+ name: Push-to-EC2
 
-on:
+# Trigger deployment only on push to main branch
+ on:
   push:
-    branches:
-      - master  # Change this to your main branch name
+  branches:
+  	- master
 
-jobs:
+ jobs:
   deploy:
-    runs-on: self-hosted
+  name: Deploy to EC2 on master branch push
+  runs-on: ubuntu-latest
 
-    steps:
-    - name: Checkout code
+  steps:
+  	- name: Checkout the files
       uses: actions/checkout@v2
 
-    - name: Set up SSH key
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
-        ssh-private-key: ${{ secrets.KEY_PAIR }}
-        # You'll need to add the corresponding public key to your AWS server's authorized_keys files
+  	- name: Deploy to Server 1
+    	uses: easingthemes/ssh-deploy@main
+    	env:
+      	SSH_PRIVATE_KEY: ${{ secrets.KEY }}
+      	REMOTE_HOST: ${{ secrets.HOST_DNS }}
+      	REMOTE_USER: ${{ secrets.USERNAME }}
 
-    - name: Deploy to AWS
-      run: |
-        ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/ ec2-user@18.216.73.100 "
-        cd /var/www/html/test
-        sudo git add .
-        sudo git commit -m "servercommit"
-        sudo git pull origin main
+  	- name: Executing remote ssh commands using ssh key
+    	uses: appleboy/ssh-action@master
+    	with:
+      	host: ${{ secrets.HOST_DNS }}
+      	username: ${{ secrets.USERNAME }}
+      	key: ${{ secrets.KEY }}
+      	script: |
+        	sudo apt-get -y update
+        	sudo apt-get install -y apache2
+        	sudo systemctl start apache2
+        	sudo git clone https://github.com/Hemantrajput1997/new.git
