@@ -1,26 +1,30 @@
 name: Deploy to AWS
-
 on:
   push:
     branches:
-      - master  # Change this to your main branch name
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
+      - master
+      - hemant
+    deploy-prod:
+    name: Deploy to Production (Requires Approval)
+    needs: checkout
+    runs-on: ubuntu-latest  # Replace with your desired runner OS (optional)
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Set up SSH key
-      uses: webfactory/ssh-agent@v0.5.3
-      with:
+      - name: Use checkout job outputs
+        uses: ./.github/actions/checkout-output@v1  # Custom reusable workflow (optional)
+      - name: Set environment variables for prod (can be overridden in branch-specific sections)
+        run: |
+      - name: Request approval
+        uses: actions/github-script@v6
+        with:
+        github-token: ${{ secrets.TOKEN }}
+      - name: Set up SSH key
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
         ssh-private-key: ${{ secrets.KEY }}
         # You'll need to add the corresponding public key to your AWS server's authorized_keys files
 
-    - name: Deploy to AWS
-      run: |
-        ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/ ubuntu@3.143.9.73 "
-        cd /var/www/html/new
-        sudo git pull origin master   "
+      - name: Deploy to AWS
+        run: |
+          ssh -o StrictHostKeyChecking=no -i $HOME/.ssh/ ubuntu@3.138.33.29 "
+          cd /var/www/html/new
+                                                                sudo git pull origin master " 
