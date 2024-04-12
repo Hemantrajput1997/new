@@ -8,7 +8,6 @@ on:
     name: Deploy to Production (Requires Approval)
     needs: checkout
     runs-on: ubuntu-latest  # Replace with your desired runner OS (optional)
-    steps:
       - name: Use checkout job outputs
         uses: ./.github/actions/checkout-output@v1  # Custom reusable workflow (optional)
       - name: Set environment variables for prod (can be overridden in branch-specific sections)
